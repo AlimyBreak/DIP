@@ -1,2 +1,2 @@
 # StudyNote_DIP
-study node of digital image processing
+study note of digital image processing
