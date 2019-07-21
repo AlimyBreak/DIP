@@ -1,4 +1,4 @@
-function [F_u_v] = my_fft2D( f_m_n,M,N)
+function [F_u_v] = my_fft2D1( f_m_n,M,N)
 
 
     F_u_v = zeros(M,N);

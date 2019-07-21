@@ -14,9 +14,14 @@ for i = 1:M
 end
 
 right_fft      = fft2(f_m_n)/(M*N);
-my_fft2_result = my_fft2D1(f_m_n,M,N); 
+my_fft2_result1 = my_fft2D1(f_m_n,M,N); 
+my_fft2_result2 = my_fft2D1(f_m_n,M,N);
 
-right_fft - my_fft2_result
+right_fft - my_fft2_result1;
+
+right_fft - my_fft2_result2;
+
+my_fft2_result1 - my_fft2_result2
 
 
 
