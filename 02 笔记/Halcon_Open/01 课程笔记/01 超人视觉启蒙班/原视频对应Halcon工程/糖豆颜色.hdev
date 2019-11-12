@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="12.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image, 'C:/Users/Administrator/Desktop/一维二维码实战(培训集合）/17基于mlp的识别/颜色/13_8376_51ad9d34f5f01dc.bmp')</l>
+<l>*read_image(Image, 'C:/Users/Administrator/Desktop/颜色/13_8376_51ad9d34f5f01dc.bmp')</l>
+<l>get_image_size(Image, Width, Height)</l>
+<l>dev_open_window(0, 0, Width, Height, 'black', WindowHandle)</l>
+<l>dev_display(Image)</l>
+<l>Regions:=['白','红','绿','黑']</l>
+<l>gen_empty_obj(Classes)</l>
+<c></c>
+<l>for i := 1 to |Regions| by 1</l>
+<l>    dev_display(Image)</l>
+<l>    dev_display(Classes)</l>
+<l>    disp_message(WindowHandle, '请选定指定区域：', 'window', 12, 12, 'black', 'true')</l>
+<l>    draw_rectangle1(WindowHandle, Row1, Column1, Row2, Column2)</l>
+<l>    gen_rectangle1(Rectangle, Row1, Column1, Row2, Column2)</l>
+<l>    concat_obj(Rectangle, Classes, Classes)</l>
+<l>endfor</l>
+<l>union1(Classes, RegionUnion)</l>
+<l>create_class_mlp(3, 7, 4, 'softmax', 'normalization', 3, 42, MLPHandle)</l>
+<l>add_samples_image_class_mlp(Image, Classes, MLPHandle)</l>
+<c></c>
+<l>disp_message(WindowHandle, '开始训练模型', 'window', 12, 12, 'black', 'true')</l>
+<l>train_class_mlp(MLPHandle, 400,0.5, 0.01, Error, ErrorLog)</l>
+<l>for img := 1 to 5 by 1</l>
+<l>    read_image(Image1, 'C:/Users/Administrator/Desktop/颜色/13_8376_51ad9d34f5f01dc.bmp')</l>
+<l>    classify_image_class_mlp(Image1, ClassRegions, MLPHandle, 0.5)</l>
+<l>    for Index := 1 to 4 by 1</l>
+<l>        dev_clear_window()</l>
+<l>        copy_obj(ClassRegions, ObjectsSelected, Index, 1)</l>
+<l>        disp_message(WindowHandle, Regions[Index-1], 'window', 10, 10, 'black', 'true')</l>
+<l>        dev_display(ObjectsSelected)</l>
+<l>        stop()</l>
+<c>       </c>
+<l>    endfor</l>
+<l>endfor</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
