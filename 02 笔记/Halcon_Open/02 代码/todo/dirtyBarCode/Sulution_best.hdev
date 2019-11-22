@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* 执行出错.</c>
+<l>dev_close_window ()</l>
+<l>read_image (Image20191118130528, 'dirtyBar.jpg')</l>
+<c></c>
+<l>dev_open_window_fit_image (Image20191118130528, 0, 0, -1, -1, WindowHandle)</l>
+<l>dev_display (Image20191118130528)</l>
+<c></c>
+<l>threshold (Image20191118130528, Regions, 0, 57)</l>
+<l>connection (Regions, ConnectedRegions)</l>
+<l>dilation_circle (ConnectedRegions, RegionDilation, 2)</l>
+<l>shape_trans (RegionDilation, RegionTrans, 'rectangle1')</l>
+<l>paint_region (RegionTrans, Image20191118130528, ImageResult, 255.0, 'fill')</l>
+<l>threshold (ImageResult, Regions_all, 66, 188)</l>
+<c></c>
+<l>read_image (Image, 'dirtyBar.jpg')</l>
+<l>get_image_size (Image, Width, Height)</l>
+<l>gen_rectangle1 (ROI_0, 0, 0, Height, Width)</l>
+<l>threshold (Image, Regions, 0, 49)</l>
+<l>connection (Regions, ConnectedRegions)</l>
+<l>dilation_rectangle1 (ConnectedRegions, RegionDilation, 4, 4)</l>
+<l>shape_trans (RegionDilation, RegionTrans, 'rectangle1')</l>
+<l>difference (ROI_0, RegionTrans, RegionDifference)</l>
+<l>reduce_domain (Image, RegionDifference, ImageReduced)</l>
+<l>gray_closing_shape (ImageReduced, ImageClosing,4, 4, 'octagon')</l>
+<l>threshold (ImageClosing, Regions1, 80, 167)</l>
+<l>intersection (Regions_all, Regions1, RegionIntersection)</l>
+<l>dilation_circle (RegionIntersection, RegionDilation1, 3.5)</l>
+<l>dev_display (Image20191118130528)</l>
+<l>dev_display (RegionDilation1)</l>
+<l>dump_window_image (Image, 200000)</l>
+<l>write_image (Image, 'bmp', 0, 'C:/Users/Administrator/Desktop/11') </l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

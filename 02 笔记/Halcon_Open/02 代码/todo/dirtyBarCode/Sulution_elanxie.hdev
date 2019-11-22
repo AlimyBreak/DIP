@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image2, 'dirtyBar.jpg')</l>
+<l>rgb1_to_gray (Image2, GrayImage)</l>
+<l>mean_image (GrayImage, ImageMean, 1, 40)</l>
+<l>dyn_threshold (ImageMean, GrayImage, RegionDynThresh, 10, 'light')</l>
+<l>connection (RegionDynThresh, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'width', 'and', 3, 20) </l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

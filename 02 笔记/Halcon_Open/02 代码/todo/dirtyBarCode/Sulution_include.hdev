@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<l>read_image (Image1438300A96a22eaf6ed4e8, 'dirtyBar.jpg')</l>
+<l>get_image_size (Image1438300A96a22eaf6ed4e8, Width, Height)</l>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0, 2*Width, 2*Height, 'black', WindowHandle)</l>
+<l>dev_display (Image1438300A96a22eaf6ed4e8)</l>
+<l>rgb1_to_gray (Image1438300A96a22eaf6ed4e8, GrayImage)</l>
+<c></c>
+<l>fft_generic (GrayImage, ImageFFT, 'to_freq', -1, 'sqrt', 'dc_center', 'complex')</l>
+<l>* gen_gauss_filter (ImageGauss, 0.5, 10, 0, 'none', 'dc_center', Width, Height)</l>
+<l>* gen_gauss_filter (ImageGauss1, 0.5, 0.5, 0, 'none', 'dc_center', Width, Height)</l>
+<c></c>
+<l>* sub_image (ImageGauss1, ImageGauss, ImageSub, 1, 125)</l>
+<l>* convol_fft (ImageFFT, ImageSub, ImageConvol)</l>
+<c></c>
+<l>* fft_generic (ImageConvol, ImageFFT1, 'from_freq', 1, 'sqrt', 'dc_center', 'byte')</l>
+<c></c>
+<l>gen_rectangle1 (ROI_0, 30.7828, 1.74509, 32.9552, 595.571)</l>
+<l>paint_region (ROI_0, ImageFFT, ImageResult, 0, 'fill')</l>
+<l>fft_generic (ImageResult, ImageFFT2, 'from_freq', 1, 'none', 'dc_center', 'real')</l>
+<c></c>
+<l>threshold (ImageFFT2, Regions, -50000, -2626.64)</l>
+<c></c>
+<l>connection (Regions, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 3.892, 50)</l>
+<l>select_shape (SelectedRegions, SelectedRegions1, ['height','area','width'], 'and', [0,3.892,1.9603], [7.127,50,9.8492])</l>
+<c></c>
+<l>dilation_rectangle1 (SelectedRegions1, RegionDilation, 22, 2)</l>
+<l>union1 (RegionDilation, RegionUnion)</l>
+<l>connection (RegionUnion, ConnectedRegions1)</l>
+<l>select_shape (ConnectedRegions1, SelectedRegions2, 'area', 'and', 316.04, 2000)</l>
+<l>select_shape (SelectedRegions2, SelectedRegions3, ['height','area'], 'and', [13.011,316.04], [50,2000])</l>
+<c></c>
+<l>intersection (SelectedRegions3, SelectedRegions1, RegionIntersection)</l>
+<c></c>
+<l>dev_display (Image1438300A96a22eaf6ed4e8)</l>
+<l>dev_display (RegionIntersection) </l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

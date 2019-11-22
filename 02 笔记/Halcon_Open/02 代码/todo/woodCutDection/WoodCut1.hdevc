@@ -1,0 +1,37 @@
+* 代码来源 http://www.ihalcon.com/read-13031-1.html 
+* Author: haicon123
+
+dev_update_off ()
+dev_close_window ()
+dev_open_window (0, 0, 450, 400, 'black', WindowHandle)
+
+* 读取图片
+read_image (Image, '3.jpg')
+
+* 灰度化
+rgb1_to_gray (Image, GrayImage)
+
+*傅里叶变换去背景
+fft_generic (GrayImage, ImageFFT, 'to_freq', -1, 'sqrt', 'dc_center', 'complex')
+gen_rectangle2 (Rectangle1, 308.5, 176.56, rad(-0), 179.4, 7.725)
+gen_rectangle2 (Rectangle2, 306.955, 175, rad(-90), 180.765, 4.68)
+union2 (Rectangle1, Rectangle2, UnionRectangle)
+paint_region (UnionRectangle, ImageFFT, ImageResult, 0, 'fill')
+fft_generic (ImageResult, ImageFFT1, 'from_freq', 1, 'sqrt', 'dc_center', 'byte')
+
+*提取划痕
+threshold (ImageFFT1, Regions, 5, 240)
+connection (Regions, ConnectedRegions)
+select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 20, 99999)
+union1 (SelectedRegions, RegionUnion)
+dilation_rectangle1 (RegionUnion, RegionDilation, 5, 5)
+connection (RegionDilation, ConnectedRegions1)
+select_shape (ConnectedRegions1, SelectedRegions1, ['width','height'], 'and', [30,15], [150,100])
+dilation_rectangle1 (SelectedRegions1, RegionDilation1, 11, 11)
+union1 (RegionDilation1, RegionUnion1)
+skeleton (RegionUnion1, Skeleton)
+
+*显示
+dev_set_color ('red')
+dev_display (Image)
+dev_display (Skeleton)

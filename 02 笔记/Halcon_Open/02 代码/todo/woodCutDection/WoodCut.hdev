@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="18.11.0.1">
+<procedure name="main">
+<interface/>
+<body>
+<c>* 代码来源</c>
+<c></c>
+<l>dev_update_off ()</l>
+<l>dev_close_window ()</l>
+<l>dev_open_window (0, 0, 450, 400, 'black', WindowHandle)</l>
+<c></c>
+<c>* 读取图片</c>
+<l>read_image (Image, './woodcut.jpg')</l>
+<c></c>
+<c>* 灰度化</c>
+<l>rgb1_to_gray (Image, GrayImage)</l>
+<c></c>
+<c>*傅里叶变换去背景</c>
+<l>fft_generic (GrayImage, ImageFFT, 'to_freq', -1, 'sqrt', 'dc_center', 'complex')</l>
+<l>gen_rectangle2 (Rectangle1, 308.5, 176.56, rad(-0), 179.4, 7.725)</l>
+<l>gen_rectangle2 (Rectangle2, 306.955, 175, rad(-90), 180.765, 4.68)</l>
+<l>union2 (Rectangle1, Rectangle2, UnionRectangle)</l>
+<l>paint_region (UnionRectangle, ImageFFT, ImageResult, 0, 'fill')</l>
+<l>fft_generic (ImageResult, ImageFFT1, 'from_freq', 1, 'sqrt', 'dc_center', 'byte')</l>
+<c></c>
+<c>*提取划痕</c>
+<l>threshold (ImageFFT1, Regions, 5, 240)</l>
+<l>connection (Regions, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 20, 99999)</l>
+<l>union1 (SelectedRegions, RegionUnion)</l>
+<l>dilation_rectangle1 (RegionUnion, RegionDilation, 5, 5)</l>
+<l>connection (RegionDilation, ConnectedRegions1)</l>
+<l>select_shape (ConnectedRegions1, SelectedRegions1, ['width','height'], 'and', [30,15], [150,100])</l>
+<l>dilation_rectangle1 (SelectedRegions1, RegionDilation1, 11, 11)</l>
+<l>union1 (RegionDilation1, RegionUnion1)</l>
+<l>skeleton (RegionUnion1, Skeleton)</l>
+<c></c>
+<c>*显示</c>
+<l>dev_set_color ('red')</l>
+<l>dev_display (Image)</l>
+<l>dev_display (Skeleton)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
